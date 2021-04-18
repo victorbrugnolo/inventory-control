@@ -38,5 +38,14 @@
         <constraints nullable="false"/>
       </column>
     </createTable>
+
+    <addForeignKeyConstraint
+      baseTableName="inventory_movement"
+      baseColumnNames="product_id"
+      referencedTableName="product"
+      referencedColumnNames="id"
+      constraintName="fk_inventory_movement_product"
+      onDelete="RESTRICT"
+      onUpdate="RESTRICT"/>
   </changeSet>
 </databaseChangeLog>
