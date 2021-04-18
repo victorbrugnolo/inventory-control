@@ -1,5 +1,6 @@
 package dev.victorbrugnolo.inventorycontrol.api.entities;
 
+import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductDTO;
 import dev.victorbrugnolo.inventorycontrol.api.enums.ProductTypeEnum;
 import java.math.BigDecimal;
 import javax.persistence.Column;
@@ -33,4 +34,14 @@ public class Product extends BaseEntity {
 
   @Column(nullable = false)
   private Integer supply;
+
+  public Product update(final ProductDTO toUpdate) {
+    this.code = toUpdate.getCode();
+    this.description = toUpdate.getDescription();
+    this.type = toUpdate.getType();
+    this.supplierAmount = toUpdate.getSupplierAmount();
+    this.supply = toUpdate.getSupply();
+
+    return this;
+  }
 }

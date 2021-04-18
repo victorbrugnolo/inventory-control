@@ -7,10 +7,13 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
+@Getter
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 
@@ -18,6 +21,7 @@ public abstract class BaseEntity implements Serializable {
   @GeneratedValue(generator = "UUID")
   @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(name = "id", unique = true, nullable = false)
+  @Setter
   private UUID id;
 
   @CreationTimestamp
