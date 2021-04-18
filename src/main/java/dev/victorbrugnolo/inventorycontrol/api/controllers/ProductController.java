@@ -4,6 +4,7 @@ import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductDTO;
 import dev.victorbrugnolo.inventorycontrol.api.entities.Product;
 import dev.victorbrugnolo.inventorycontrol.api.services.ProductService;
 import java.net.URI;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ public class ProductController {
   private final ProductService productService;
 
   @PostMapping
-  public ResponseEntity<Void> save(@RequestBody final ProductDTO toSave) {
+  public ResponseEntity<Void> save(@RequestBody @Valid final ProductDTO toSave) {
     Product saved = productService.save(toSave);
     URI location = ServletUriComponentsBuilder
         .fromCurrentRequest()
@@ -50,7 +51,7 @@ public class ProductController {
 
   @PutMapping("/{id}")
   public ResponseEntity<Product> update(@PathVariable("id") final String id,
-      @RequestBody final ProductDTO toUpdate) {
+      @RequestBody @Valid final ProductDTO toUpdate) {
     Product updated = productService.update(id, toUpdate);
     return ResponseEntity.ok(updated);
   }
