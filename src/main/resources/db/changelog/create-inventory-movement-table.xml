@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.8"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.8
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.8.xsd">
+  <changeSet id="create-inventory-movement-table" author="victorbrugnolo">
+    <preConditions>
+      <not>
+        <tableExists tableName="inventory_movement"/>
+      </not>
+    </preConditions>
+
+    <createTable tableName="inventory_movement">
+      <column name="id" type="uuid">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="product_id" type="uuid">
+        <constraints nullable="false"/>
+      </column>
+      <column name="move_type" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="sale_amount" type="decimal(12,2)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="sale_date" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="handled_supply" type="int">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+</databaseChangeLog>
