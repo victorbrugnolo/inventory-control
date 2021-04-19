@@ -38,13 +38,11 @@ public class Product extends BaseEntity implements Serializable {
   @Column(nullable = false)
   private Integer supply;
 
-  public Product update(final ProductRequest toUpdate) {
+  public void update(final ProductRequest toUpdate) {
     this.code = toUpdate.getCode();
     this.description = toUpdate.getDescription();
     this.type = toUpdate.getType();
     this.supplierAmount = toUpdate.getSupplierAmount();
     this.supply = toUpdate.getSupply();
-
-    return this;
   }
 }
