@@ -24,7 +24,7 @@ import lombok.Setter;
 @Entity(name = "inventory_movement")
 public class InventoryMovement extends BaseEntity {
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.MERGE)
   private Product product;
 
   @Enumerated(EnumType.STRING)
