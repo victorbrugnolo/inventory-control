@@ -11,7 +11,7 @@
 	<groupId>dev.victorbrugnolo.inventory-control</groupId>
 	<artifactId>api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>api</name>
+	<name>inventory-control</name>
 	<description>API para controle de estoque</description>
 	<properties>
 		<java.version>11</java.version>

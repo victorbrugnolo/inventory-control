@@ -20,7 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class InventoryMovementRepositoryTests {
+class InventoryMovementRepositoryTest {
 
   @Autowired
   private InventoryMovementRepository inventoryMovementRepository;
