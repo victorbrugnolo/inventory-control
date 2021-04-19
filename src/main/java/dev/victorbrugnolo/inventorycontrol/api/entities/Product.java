@@ -1,6 +1,6 @@
 package dev.victorbrugnolo.inventorycontrol.api.entities;
 
-import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductDTO;
+import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductRequest;
 import dev.victorbrugnolo.inventorycontrol.api.enums.ProductTypeEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -38,7 +38,7 @@ public class Product extends BaseEntity implements Serializable {
   @Column(nullable = false)
   private Integer supply;
 
-  public Product update(final ProductDTO toUpdate) {
+  public Product update(final ProductRequest toUpdate) {
     this.code = toUpdate.getCode();
     this.description = toUpdate.getDescription();
     this.type = toUpdate.getType();

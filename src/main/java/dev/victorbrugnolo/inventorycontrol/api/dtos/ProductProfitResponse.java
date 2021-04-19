@@ -1,21 +1,21 @@
 package dev.victorbrugnolo.inventorycontrol.api.dtos;
 
-import dev.victorbrugnolo.inventorycontrol.api.enums.MoveTypeEnum;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovementDTO {
+public class ProductProfitResponse {
 
-  private MoveTypeEnum type;
+  private Integer outputQuantity;
 
-  private Integer supply;
+  private BigDecimal profit;
 
-  private BigDecimal amount;
 }

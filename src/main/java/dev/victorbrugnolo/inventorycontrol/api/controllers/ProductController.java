@@ -1,9 +1,13 @@
 package dev.victorbrugnolo.inventorycontrol.api.controllers;
 
-import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductDTO;
+import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductByTypeResponse;
+import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductProfitResponse;
+import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductRequest;
 import dev.victorbrugnolo.inventorycontrol.api.entities.Product;
+import dev.victorbrugnolo.inventorycontrol.api.enums.ProductTypeEnum;
 import dev.victorbrugnolo.inventorycontrol.api.services.ProductService;
 import java.net.URI;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +31,7 @@ public class ProductController {
   private final ProductService productService;
 
   @PostMapping
-  public ResponseEntity<Void> save(@RequestBody @Valid final ProductDTO toSave) {
+  public ResponseEntity<Void> save(@RequestBody @Valid final ProductRequest toSave) {
     Product saved = productService.save(toSave);
     URI location = ServletUriComponentsBuilder
         .fromCurrentRequest()
@@ -51,7 +55,7 @@ public class ProductController {
 
   @PutMapping("/{id}")
   public ResponseEntity<Product> update(@PathVariable("id") final String id,
-      @RequestBody @Valid final ProductDTO toUpdate) {
+      @RequestBody @Valid final ProductRequest toUpdate) {
     Product updated = productService.update(id, toUpdate);
     return ResponseEntity.ok(updated);
   }
@@ -60,5 +64,18 @@ public class ProductController {
   public ResponseEntity<Product> delete(@PathVariable("id") final String id) {
     productService.delete(id);
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/output/{type}")
+  public ResponseEntity<List<ProductByTypeResponse>> getByType(
+      @PathVariable("type") final ProductTypeEnum type) {
+    List<ProductByTypeResponse> products = productService.getByType(type);
+    return ResponseEntity.ok(products);
+  }
+
+  @GetMapping("/{id}/profit")
+  public ResponseEntity<ProductProfitResponse> getProfit(@PathVariable("id") final String id) {
+    ProductProfitResponse profit = productService.getProfit(id);
+    return ResponseEntity.ok(profit);
   }
 }

@@ -1,6 +1,6 @@
 package dev.victorbrugnolo.inventorycontrol.api.services.impl;
 
-import dev.victorbrugnolo.inventorycontrol.api.dtos.MovementDTO;
+import dev.victorbrugnolo.inventorycontrol.api.dtos.MovementRequest;
 import dev.victorbrugnolo.inventorycontrol.api.entities.InventoryMovement;
 import dev.victorbrugnolo.inventorycontrol.api.entities.Product;
 import dev.victorbrugnolo.inventorycontrol.api.enums.MoveTypeEnum;
@@ -25,7 +25,7 @@ public class InventoryServiceImpl implements InventoryService {
   private final InventoryMovementRepository inventoryMovementRepository;
 
   @Override
-  public InventoryMovement makeMovement(final String id, final MovementDTO movement) {
+  public InventoryMovement makeMovement(final String id, final MovementRequest movement) {
     Product product = productRepository.findById(UUID.fromString(id))
         .orElseThrow(() -> new NotFoundException(PRODUCT_NOT_FOUND));
 

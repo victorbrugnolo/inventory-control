@@ -1,6 +1,6 @@
 package dev.victorbrugnolo.inventorycontrol.api.controllers;
 
-import dev.victorbrugnolo.inventorycontrol.api.dtos.MovementDTO;
+import dev.victorbrugnolo.inventorycontrol.api.dtos.MovementRequest;
 import dev.victorbrugnolo.inventorycontrol.api.services.InventoryService;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class InventoryMovementController {
 
   @PostMapping("/{id}")
   public ResponseEntity<Void> makeMovement(@PathVariable("id") final String id,
-      @RequestBody @Valid final MovementDTO movement) {
+      @RequestBody @Valid final MovementRequest movement) {
     inventoryService.makeMovement(id, movement);
     return ResponseEntity.ok().build();
   }
