@@ -16,11 +16,14 @@ import dev.victorbrugnolo.inventorycontrol.api.enums.MoveTypeEnum;
 import dev.victorbrugnolo.inventorycontrol.api.enums.ProductTypeEnum;
 import dev.victorbrugnolo.inventorycontrol.api.exceptions.BadRequestException;
 import dev.victorbrugnolo.inventorycontrol.api.exceptions.NotFoundException;
+import dev.victorbrugnolo.inventorycontrol.api.exceptions.UnprocessableEntityException;
 import dev.victorbrugnolo.inventorycontrol.api.repositories.InventoryMovementRepository;
 import dev.victorbrugnolo.inventorycontrol.api.repositories.ProductRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -113,9 +116,20 @@ class ProductServiceImplTest {
   }
 
   @Test
+  void mustGetUnprocessableEntityExceptionWhenDelete() {
+    when(productRepository.findById(any(UUID.class)))
+        .thenReturn(Optional.of(Product.builder().build()));
+    when(inventoryMovementRepository.findByProduct(any(Product.class))).thenReturn(
+        Collections.singletonList(getInventoryMovement()));
+
+    assertThrows(UnprocessableEntityException.class, () -> productService.delete(STRING_UUID));
+  }
+
+  @Test
   void mustDelete() {
     when(productRepository.findById(any(UUID.class)))
         .thenReturn(Optional.of(Product.builder().build()));
+    when(inventoryMovementRepository.findByProduct(any(Product.class))).thenReturn(new ArrayList<>());
 
     assertDoesNotThrow(() -> productService.delete(STRING_UUID));
   }
@@ -144,7 +158,7 @@ class ProductServiceImplTest {
   void mustGetProfit() {
     when(productRepository.findById(any(UUID.class))).thenReturn(Optional.of(getProduct()));
     when(inventoryMovementRepository
-        .getByTypeAndProduct(any(MoveTypeEnum.class), any(Product.class)))
+        .findByTypeAndProduct(any(MoveTypeEnum.class), any(Product.class)))
         .thenReturn(Arrays.asList(getInventoryMovement(), getInventoryMovement()));
 
     ProductProfitResponse response = productService.getProfit(STRING_UUID);

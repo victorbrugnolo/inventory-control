@@ -99,7 +99,7 @@ class InventoryMovementRepositoryTest {
     saveNewMovement(product);
 
     List<InventoryMovement> movements = inventoryMovementRepository
-        .getByTypeAndProduct(MoveTypeEnum.OUTPUT, product);
+        .findByTypeAndProduct(MoveTypeEnum.OUTPUT, product);
 
     assertEquals(2, movements.size());
   }

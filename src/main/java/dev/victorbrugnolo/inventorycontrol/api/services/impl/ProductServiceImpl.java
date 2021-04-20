@@ -10,11 +10,13 @@ import dev.victorbrugnolo.inventorycontrol.api.enums.MoveTypeEnum;
 import dev.victorbrugnolo.inventorycontrol.api.enums.ProductTypeEnum;
 import dev.victorbrugnolo.inventorycontrol.api.exceptions.BadRequestException;
 import dev.victorbrugnolo.inventorycontrol.api.exceptions.NotFoundException;
+import dev.victorbrugnolo.inventorycontrol.api.exceptions.UnprocessableEntityException;
 import dev.victorbrugnolo.inventorycontrol.api.repositories.InventoryMovementRepository;
 import dev.victorbrugnolo.inventorycontrol.api.repositories.ProductRepository;
 import dev.victorbrugnolo.inventorycontrol.api.services.ProductService;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -29,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
   private static final String PRODUCT_ALREADY_EXISTS = "Product with code %s already exists";
   private static final String PRODUCT_NOT_FOUND = "Product not found";
+  private static final String PRODUCT_HAVE_MOVEMENTS = "This product have movements";
 
   private final ProductRepository productRepository;
   private final InventoryMovementRepository inventoryMovementRepository;
@@ -63,6 +66,13 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public void delete(final String id) {
+    Product toDelete = findById(id);
+    List<InventoryMovement> movements = inventoryMovementRepository.findByProduct(toDelete);
+
+    if (!movements.isEmpty()) {
+      throw new UnprocessableEntityException(PRODUCT_HAVE_MOVEMENTS);
+    }
+
     productRepository.delete(findById(id));
   }
 
@@ -72,10 +82,8 @@ public class ProductServiceImpl implements ProductService {
     return products.stream().map(product -> {
       ProductByTypeResponse productByTypeResponse = ProductByTypeResponse
           .toProductByTypeResponse(product);
-      productByTypeResponse
-          .setOutputQuantity(inventoryMovementRepository.sumHandledSupplyByTypeAndProduct(
-              MoveTypeEnum.OUTPUT, product));
-      productByTypeResponse.setOutputQuantity(getProductOutputQuantity(product));
+      Integer outputQuantity = getProductOutputQuantity(product);
+      productByTypeResponse.setOutputQuantity(Objects.isNull(outputQuantity) ? 0 : outputQuantity);
       return productByTypeResponse;
     }).collect(Collectors.toList());
   }
@@ -90,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
     handledSupply.set(0);
 
     List<InventoryMovement> movements = inventoryMovementRepository
-        .getByTypeAndProduct(MoveTypeEnum.OUTPUT, product);
+        .findByTypeAndProduct(MoveTypeEnum.OUTPUT, product);
 
     movements.forEach(inventoryMovement -> {
       BigDecimal saleProfit = inventoryMovement.getSaleAmount()

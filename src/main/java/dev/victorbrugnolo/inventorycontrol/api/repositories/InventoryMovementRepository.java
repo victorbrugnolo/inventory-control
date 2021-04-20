@@ -13,6 +13,7 @@ public interface InventoryMovementRepository extends JpaRepository<InventoryMove
   @Query("SELECT sum(im.handledSupply) from inventory_movement im where im.type = ?1 and product = ?2")
   Integer sumHandledSupplyByTypeAndProduct(MoveTypeEnum type, Product product);
 
-  List<InventoryMovement> getByTypeAndProduct(MoveTypeEnum type, Product product);
+  List<InventoryMovement> findByTypeAndProduct(MoveTypeEnum type, Product product);
 
+  List<InventoryMovement> findByProduct(Product product);
 }

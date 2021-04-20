@@ -10,6 +10,7 @@ import dev.victorbrugnolo.inventorycontrol.api.services.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
@@ -71,7 +72,9 @@ public class ProductController {
 
   @DeleteMapping("/{id}")
   @ApiOperation(value = "Permite ao usuário excluir um produto")
-  @ApiResponse(code = 404, message = "Product not found")
+  @ApiResponses
+      ({@ApiResponse(code = 404, message = "Product not found"),
+          @ApiResponse(code = 422, message = "This product have movements")})
   public ResponseEntity<Product> delete(@PathVariable("id") final String id) {
     productService.delete(id);
     return ResponseEntity.ok().build();
