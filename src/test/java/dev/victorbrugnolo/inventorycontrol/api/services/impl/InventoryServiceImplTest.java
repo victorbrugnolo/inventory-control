@@ -39,18 +39,18 @@ class InventoryServiceImplTest {
   @Test
   void mustGetNotFoundExceptionWhenMakeMovement() {
     when(productRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+    MovementRequest request = getMovementRequest(7500, MoveTypeEnum.OUTPUT);
     assertThrows(NotFoundException.class,
-        () -> inventoryService
-            .makeMovement(STRING_UUID, getMovementRequest(7500, MoveTypeEnum.OUTPUT)));
+        () -> inventoryService.makeMovement(STRING_UUID, request));
   }
 
   @Test
   void mustGetUnprocessableEntityExceptionWhenMakeMovement() {
     when(productRepository.findById(any(UUID.class))).thenReturn(Optional.of(getProduct()));
+    MovementRequest request = getMovementRequest(7501, MoveTypeEnum.OUTPUT);
 
     assertThrows(UnprocessableEntityException.class,
-        () -> inventoryService
-            .makeMovement(STRING_UUID, getMovementRequest(7501, MoveTypeEnum.OUTPUT)));
+        () -> inventoryService.makeMovement(STRING_UUID, request));
   }
 
   @Test
