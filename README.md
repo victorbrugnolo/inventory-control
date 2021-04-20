@@ -1,4 +1,4 @@
-## Buildings microservice 🏘🏢
+## Inventory Control API 📈
 ### Descrição 📃
 > API para controle de estoque. Permite manter produtos e realizar movimentações.
 
