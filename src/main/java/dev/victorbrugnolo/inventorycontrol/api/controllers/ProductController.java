@@ -3,6 +3,7 @@ package dev.victorbrugnolo.inventorycontrol.api.controllers;
 import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductByTypeResponse;
 import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductProfitResponse;
 import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductRequest;
+import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductResponse;
 import dev.victorbrugnolo.inventorycontrol.api.entities.Product;
 import dev.victorbrugnolo.inventorycontrol.api.enums.ProductTypeEnum;
 import dev.victorbrugnolo.inventorycontrol.api.services.ProductService;
@@ -42,22 +43,19 @@ public class ProductController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Product> getById(@PathVariable("id") final String id) {
-    Product found = productService.getById(id);
-    return ResponseEntity.ok(found);
+  public ResponseEntity<ProductResponse> getById(@PathVariable("id") final String id) {
+    return ResponseEntity.ok(productService.getById(id));
   }
 
   @GetMapping
-  public ResponseEntity<Page<Product>> getAll(final Pageable pageable) {
-    Page<Product> found = productService.getAll(pageable);
-    return ResponseEntity.ok(found);
+  public ResponseEntity<Page<ProductResponse>> getAll(final Pageable pageable) {
+    return ResponseEntity.ok(productService.getAll(pageable));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Product> update(@PathVariable("id") final String id,
+  public ResponseEntity<ProductResponse> update(@PathVariable("id") final String id,
       @RequestBody @Valid final ProductRequest toUpdate) {
-    Product updated = productService.update(id, toUpdate);
-    return ResponseEntity.ok(updated);
+    return ResponseEntity.ok(productService.update(id, toUpdate));
   }
 
   @DeleteMapping("/{id}")

@@ -3,6 +3,7 @@ package dev.victorbrugnolo.inventorycontrol.api.services;
 import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductByTypeResponse;
 import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductProfitResponse;
 import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductRequest;
+import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductResponse;
 import dev.victorbrugnolo.inventorycontrol.api.entities.Product;
 import dev.victorbrugnolo.inventorycontrol.api.enums.ProductTypeEnum;
 import java.util.List;
@@ -13,11 +14,11 @@ public interface ProductService {
 
   Product save(ProductRequest toSave);
 
-  Product getById(String id);
+  ProductResponse getById(String id);
 
-  Page<Product> getAll(Pageable pageable);
+  Page<ProductResponse> getAll(Pageable pageable);
 
-  Product update(String id, ProductRequest update);
+  ProductResponse update(String id, ProductRequest update);
 
   void delete(String id);
 

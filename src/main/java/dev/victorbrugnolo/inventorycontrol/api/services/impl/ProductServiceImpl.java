@@ -3,6 +3,7 @@ package dev.victorbrugnolo.inventorycontrol.api.services.impl;
 import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductByTypeResponse;
 import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductProfitResponse;
 import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductRequest;
+import dev.victorbrugnolo.inventorycontrol.api.dtos.ProductResponse;
 import dev.victorbrugnolo.inventorycontrol.api.entities.InventoryMovement;
 import dev.victorbrugnolo.inventorycontrol.api.entities.Product;
 import dev.victorbrugnolo.inventorycontrol.api.enums.MoveTypeEnum;
@@ -43,26 +44,26 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Product getById(final String id) {
-    return productRepository.findById(UUID.fromString(id))
-        .orElseThrow(() -> new NotFoundException(PRODUCT_NOT_FOUND));
+  public ProductResponse getById(final String id) {
+    Product found = findById(id);
+    return ProductResponse.toResponse(found);
   }
 
   @Override
-  public Page<Product> getAll(final Pageable pageable) {
-    return productRepository.findAll(pageable);
+  public Page<ProductResponse> getAll(final Pageable pageable) {
+    return productRepository.findAll(pageable).map(ProductResponse::toResponse);
   }
 
   @Override
-  public Product update(final String id, final ProductRequest update) {
-    Product found = getById(id);
+  public ProductResponse update(final String id, final ProductRequest update) {
+    Product found = findById(id);
     found.update(update);
-    return productRepository.save(found);
+    return ProductResponse.toResponse(productRepository.save(found));
   }
 
   @Override
   public void delete(final String id) {
-    productRepository.delete(getById(id));
+    productRepository.delete(findById(id));
   }
 
   @Override
@@ -81,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public ProductProfitResponse getProfit(String id) {
-    Product product = getById(id);
+    Product product = findById(id);
 
     AtomicReference<BigDecimal> profit = new AtomicReference<>();
     AtomicReference<Integer> handledSupply = new AtomicReference<>();
@@ -108,5 +109,10 @@ public class ProductServiceImpl implements ProductService {
   private Integer getProductOutputQuantity(final Product product) {
     return inventoryMovementRepository
         .sumHandledSupplyByTypeAndProduct(MoveTypeEnum.OUTPUT, product);
+  }
+
+  private Product findById(final String id) {
+    return productRepository.findById(UUID.fromString(id))
+        .orElseThrow(() -> new NotFoundException(PRODUCT_NOT_FOUND));
   }
 }
